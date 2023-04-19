@@ -1,0 +1,43 @@
+package main
+
+import "fmt"
+
+func heapSort(nums []int) []int {
+
+	// 从最后一个非叶子节点开始建堆
+	for i := len(nums)/2 - 1; i >= 0; i-- {
+		heapify(&nums, i, len(nums)-1)
+	}
+
+	// 排序。每次都把堆顶元素放在最后
+	for i := len(nums) - 1; i >= 0; i-- {
+		nums[i], nums[0] = nums[0], nums[i]
+		heapify(&nums, 0, i-1)
+	}
+	return nums
+}
+
+func heapify(nums *[]int, root, end int) {
+	for {
+		child := root*2 + 1
+		if child > end {
+			return
+		}
+		// 找出子节点其中的最大值
+		if child < end && (*nums)[child] < (*nums)[child+1] {
+			child++
+		}
+		// 比较子节点和父节点的值，要满足最大堆。满足最大堆就可以结束了
+		if (*nums)[root] > (*nums)[child] {
+			return
+		}
+		(*nums)[root], (*nums)[child] = (*nums)[child], (*nums)[root]
+		root = child
+	}
+}
+
+func main() {
+	nums := []int{2, 4, 2, 33, 53, 23, 11, 2, 9}
+	res := heapSort(nums)
+	fmt.Println(res)
+}
