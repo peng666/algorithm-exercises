@@ -13,7 +13,7 @@ import (
 func main() {
 	var m, n int
 	fmt.Println("请输入m和n，以空格分割，回车确认")
-	fmt.Scanf("%d %d", &m, &n)
+	fmt.Scanf("%d %d", &m, &n) // 当m=n就是洗牌算法
 
 	// 初始化候选数组
 	nums := make([]int, m)
