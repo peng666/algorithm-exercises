@@ -6,7 +6,6 @@ package main
 还要定义Node（key，val，前后指针pre，next）。
 3个函数：construction记住head\tail空节点，get很简单，put记住删除map的
 辅助：moveToHead,deleteTail,addToHead
-
 */
 
 type LRUCache struct {

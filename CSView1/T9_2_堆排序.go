@@ -1,43 +1,53 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
+func sortArray(nums []int) []int {
+	// quickSort(nums, 0, len(nums)-1)
+	heapSort(nums)
+	return nums
+}
+
+// 堆排序
 func heapSort(nums []int) []int {
-
-	// 从最后一个非叶子节点开始建堆
-	for i := len(nums)/2 - 1; i >= 0; i-- {
-		heapify(&nums, i, len(nums)-1)
+	// 1. 建堆。大顶堆
+	for i := len(nums)/2 - 1; i >= 0; i -= 1 {
+		heapify(nums, i, len(nums)-1)
 	}
 
-	// 排序。每次都把堆顶元素放在最后
-	for i := len(nums) - 1; i >= 0; i-- {
-		nums[i], nums[0] = nums[0], nums[i]
-		heapify(&nums, 0, i-1)
+	// 2. 调整堆
+	for i := len(nums) - 1; i >= 0; i -= 1 {
+		nums[0], nums[i] = nums[i], nums[0]
+		heapify(nums, 0, i-1) // 注意。上一行已经把下表为i的位置排正确了，已经不是end了（否则它又会排上来）
 	}
 	return nums
 }
 
-func heapify(nums *[]int, root, end int) {
-	for {
-		child := root*2 + 1
-		if child > end {
-			return
-		}
-		// 找出子节点其中的最大值
-		if child < end && (*nums)[child] < (*nums)[child+1] {
-			child++
-		}
-		// 比较子节点和父节点的值，要满足最大堆。满足最大堆就可以结束了
-		if (*nums)[root] > (*nums)[child] {
-			return
-		}
-		(*nums)[root], (*nums)[child] = (*nums)[child], (*nums)[root]
-		root = child
+func heapify(nums []int, root, end int) {
+	if root < 0 || root > end {
+		return
 	}
+
+	child := root*2 + 1 // 注意。左孩子要加1，右孩子是加2了
+	if child > end {
+		return
+	}
+
+	if child+1 <= end && nums[child] < nums[child+1] {
+		child += 1
+	}
+	if nums[root] > nums[child] {
+		return
+	}
+
+	nums[root], nums[child] = nums[child], nums[root]
+	heapify(nums, child, end)
 }
 
 func main() {
 	nums := []int{2, 4, 2, 33, 53, 23, 11, 2, 9}
-	res := heapSort(nums)
+	res := sortArray(nums)
 	fmt.Println(res)
 }
